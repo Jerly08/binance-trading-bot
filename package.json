@@ -8,9 +8,10 @@
     "server": "nodemon index.js",
     "client": "npm start --prefix frontend",
     "dev": "npx concurrently \"npm run server\" \"npm run client\"",
-    "build-frontend": "cd frontend && npm install && npm run build",
-    "build": "npm run build-frontend",
-    "vercel-build": "npm install && npm run build-frontend",
+    "install-frontend": "cd frontend && npm install",
+    "build-client": "cd frontend && npm run build",
+    "build": "npm run install-frontend && npm run build-client",
+    "vercel-build": "npm run build",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
   },
   "engines": {
