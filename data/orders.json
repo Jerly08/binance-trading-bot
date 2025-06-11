@@ -1,0 +1,12 @@
+[
+  {
+    "symbol": "BTCUSDT",
+    "action": "BUY",
+    "price_entry": "109857.91",
+    "tp_price": "112055.07",
+    "sl_price": "108759.33",
+    "leverage": "10x",
+    "timeframe": "5m",
+    "timestamp": "2025-06-11T03:24:37.089Z"
+  }
+]

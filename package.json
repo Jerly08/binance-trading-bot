@@ -1,0 +1,37 @@
+{
+  "name": "binance-trading-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "description": "Binance Trading Bot with DMI/ADX Strategy Simulation",
+  "scripts": {
+    "start": "node index.js",
+    "server": "nodemon index.js",
+    "client": "npm start --prefix frontend",
+    "dev": "npx concurrently \"npm run server\" \"npm run client\"",
+    "build": "cd frontend && npm run build",
+    "vercel-build": "npm install --prefix frontend && npm run build --prefix frontend",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
+  },
+  "keywords": [
+    "binance",
+    "trading",
+    "bot",
+    "crypto",
+    "DMI",
+    "ADX",
+    "strategy"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.9.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "node-binance-api": "^1.0.10"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.10"
+  }
+}
