@@ -10,7 +10,7 @@
     "dev": "npx concurrently \"npm run server\" \"npm run client\"",
     "install-frontend": "cd frontend && npm install",
     "build-frontend": "cd frontend && npm run build",
-    "build": "npm install && npm run install-frontend && npm run build-frontend",
+    "build": "echo \"Using Vercel buildCommand instead of this script\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
   },
   "engines": {
