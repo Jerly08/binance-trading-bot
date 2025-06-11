@@ -1,5 +1,18 @@
 [
   {
+    "id": "order_1749655632636_ia7sy",
+    "symbol": "ETHUSDT",
+    "action": "BUY",
+    "price_entry": "3200.50",
+    "tp_price": "3264.51",
+    "sl_price": "3168.50",
+    "leverage": "10x",
+    "timeframe": "15m",
+    "timestamp": "2025-06-11T15:27:12.635Z",
+    "created_at": "2025-06-11T15:27:12.636Z",
+    "updated_at": "2025-06-11T15:27:12.636Z"
+  },
+  {
     "symbol": "BTCUSDT",
     "action": "BUY",
     "price_entry": "109857.91",

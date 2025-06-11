@@ -11,6 +11,7 @@ require('dotenv').config();
 // Import configuration
 const config = require('./config');
 const logger = require('./utils/logger');
+const { connectDatabase } = require('./config/database');
 
 // Import routes
 const apiRoutes = require('./routes/api');
@@ -32,12 +33,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Ensure data directory exists
-if (!process.env.VERCEL && fs.existsSync(config.paths.dataDir)) {
-  try {
-    fs.mkdirSync(config.paths.dataDir, { recursive: true });
-  } catch (err) {
-    logger.error('Error creating data directory', err);
-  }
+if (!fs.existsSync(config.paths.dataDir)) {
+  fs.mkdirSync(config.paths.dataDir, { recursive: true });
 }
 
 // API routes
@@ -53,19 +50,41 @@ if (config.envConfig.nodeEnv === 'production') {
   });
 }
 
-// Start server if not running in serverless environment
-if (!process.env.VERCEL) {
-  app.listen(PORT, () => {
-    logger.info(`
+// Connect to MongoDB and start server
+async function startServer() {
+  try {
+    // Try to connect to MongoDB
+    if (!config.envConfig.useFallbackStorage) {
+      try {
+        await connectDatabase();
+        logger.info('✅ MongoDB connection successful');
+      } catch (dbError) {
+        logger.error('❌ MongoDB connection failed:', dbError.message);
+        logger.info('🔄 Switching to fallback file storage mode');
+        // Enable fallback storage mode
+        config.envConfig.useFallbackStorage = true;
+      }
+    } else {
+      logger.info('💾 Using file-based storage (fallback mode)');
+    }
+    
+    // Start server regardless of database connection
+    app.listen(PORT, () => {
+      logger.info(`
 =========================================
 🚀 Binance Trading Bot Server Running
 📊 Mode: ${config.envConfig.nodeEnv}
 🔌 Port: ${PORT}
 🔐 Testnet: ${config.envConfig.binanceTestnet ? 'Enabled' : 'Disabled'}
+💾 Storage: ${config.envConfig.useFallbackStorage ? 'File System (Fallback)' : 'MongoDB'}
 =========================================
-    `);
-  });
+      `);
+    });
+  } catch (error) {
+    logger.error('Failed to start server:', error);
+    process.exit(1);
+  }
 }
 
-// Export the Express app for serverless functions
-module.exports = app; 
+// Start server
+startServer(); 

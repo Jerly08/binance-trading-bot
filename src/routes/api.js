@@ -17,6 +17,7 @@ router.post('/config/reset', configController.resetConfig);
 
 // Order routes
 router.get('/orders', orderController.getOrders);
+router.post('/orders', orderController.addOrder);
 router.post('/orders/reset', orderController.resetOrders);
 
 // Webhook route

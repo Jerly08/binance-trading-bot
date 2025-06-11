@@ -28,7 +28,8 @@ const envConfig = {
   binanceApiKey: process.env.BINANCE_API_KEY,
   binanceApiSecret: process.env.BINANCE_API_SECRET,
   binanceTestnet: true, // Use testnet by default for safety
-  corsOrigins: ['http://localhost:3000']
+  corsOrigins: ['http://localhost:3000'],
+  useFallbackStorage: process.env.USE_FALLBACK_STORAGE === 'true' || false
 };
 
 module.exports = {
