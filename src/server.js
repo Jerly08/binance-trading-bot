@@ -50,7 +50,11 @@ if (config.envConfig.nodeEnv === 'production') {
   });
 }
 
-// Connect to MongoDB and start server
+// Connect to MongoDB and start server - only when running as standalone (not serverless)
+if (require.main === module) {
+  startServer();
+}
+
 async function startServer() {
   try {
     // Try to connect to MongoDB
@@ -86,5 +90,23 @@ async function startServer() {
   }
 }
 
-// Start server
-startServer(); 
+// Initialize database connection for serverless environment
+(async () => {
+  if (process.env.VERCEL) {
+    try {
+      if (!config.envConfig.useFallbackStorage) {
+        await connectDatabase();
+        logger.info('✅ MongoDB connection successful (serverless)');
+      } else {
+        logger.info('💾 Using file-based storage (fallback mode) in serverless environment');
+      }
+    } catch (error) {
+      logger.error('❌ MongoDB connection failed in serverless environment:', error.message);
+      logger.info('🔄 Switching to fallback file storage mode (serverless)');
+      config.envConfig.useFallbackStorage = true;
+    }
+  }
+})();
+
+// Export the Express app for serverless functions
+module.exports = app; 

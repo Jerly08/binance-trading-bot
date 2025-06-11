@@ -1,5 +1,5 @@
 /**
  * Main entry point for Binance Trading Bot
- * Simply requires and runs the server
+ * Exports the server for both local and serverless environments
  */
-require('./src/server'); 
+module.exports = require('./src/server'); 
