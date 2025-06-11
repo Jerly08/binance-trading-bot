@@ -9,7 +9,7 @@
     "client": "npm start --prefix frontend",
     "dev": "npx concurrently \"npm run server\" \"npm run client\"",
     "build": "cd frontend && npm run build",
-    "vercel-build": "npm install --prefix frontend && npm run build --prefix frontend",
+    "vercel-build": "cd frontend && npm install --no-audit --no-fund && npm run build",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
   },
   "keywords": [

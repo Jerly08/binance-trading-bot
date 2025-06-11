@@ -18,7 +18,11 @@ const memoryStorage = {
  * @returns {boolean} True if running in Vercel
  */
 function isVercelEnvironment() {
-  return process.env.VERCEL === '1';
+  const isVercel = process.env.VERCEL === '1';
+  if (isVercel) {
+    logger.info('Running in Vercel serverless environment');
+  }
+  return isVercel;
 }
 
 /**
@@ -29,6 +33,7 @@ function getConfig() {
   if (isVercelEnvironment()) {
     // Use memory storage in Vercel
     if (!memoryStorage.config) {
+      logger.info('Initializing config in memory storage');
       memoryStorage.config = { ...config.defaultConfig };
     }
     return memoryStorage.config;
@@ -163,11 +168,16 @@ function clearOrders() {
   }
 }
 
-module.exports = {
+// Export explicitly for better debug in Vercel
+const exportedMethods = {
   getConfig,
   saveConfig,
   getOrders,
   saveOrder,
   clearOrders,
   isVercelEnvironment
-}; 
+};
+
+logger.info(`Storage utility initialized. Vercel environment: ${isVercelEnvironment()}`);
+
+module.exports = exportedMethods; 

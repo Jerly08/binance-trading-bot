@@ -3,12 +3,15 @@
  * Provides consistent logging format with timestamps
  */
 
+// Check if we're in Vercel environment
+const isVercel = process.env.VERCEL === '1';
+
 /**
  * Log info message
  * @param {string} message - Message to log
  */
 function info(message) {
-  console.log(`[INFO] ${new Date().toISOString()} - ${message}`);
+  console.log(`[INFO]${isVercel ? '[VERCEL]' : ''} ${new Date().toISOString()} - ${message}`);
 }
 
 /**
@@ -17,7 +20,7 @@ function info(message) {
  * @param {Error} [error] - Optional error object
  */
 function error(message, error = null) {
-  console.error(`[ERROR] ${new Date().toISOString()} - ${message}`);
+  console.error(`[ERROR]${isVercel ? '[VERCEL]' : ''} ${new Date().toISOString()} - ${message}`);
   if (error) {
     console.error(error);
   }
@@ -28,7 +31,7 @@ function error(message, error = null) {
  * @param {string} message - Warning message
  */
 function warn(message) {
-  console.warn(`[WARN] ${new Date().toISOString()} - ${message}`);
+  console.warn(`[WARN]${isVercel ? '[VERCEL]' : ''} ${new Date().toISOString()} - ${message}`);
 }
 
 /**
@@ -38,7 +41,7 @@ function warn(message) {
  */
 function debug(message, data = null) {
   if (process.env.NODE_ENV === 'development') {
-    console.debug(`[DEBUG] ${new Date().toISOString()} - ${message}`);
+    console.debug(`[DEBUG]${isVercel ? '[VERCEL]' : ''} ${new Date().toISOString()} - ${message}`);
     if (data) {
       console.debug(data);
     }

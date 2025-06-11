@@ -10,6 +10,7 @@ require('dotenv').config();
 
 // Import configuration
 const config = require('./config');
+const logger = require('./utils/logger');
 
 // Import routes
 const apiRoutes = require('./routes/api');
@@ -31,8 +32,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Ensure data directory exists
-if (!fs.existsSync(config.paths.dataDir)) {
-  fs.mkdirSync(config.paths.dataDir, { recursive: true });
+if (!process.env.VERCEL && fs.existsSync(config.paths.dataDir)) {
+  try {
+    fs.mkdirSync(config.paths.dataDir, { recursive: true });
+  } catch (err) {
+    logger.error('Error creating data directory', err);
+  }
 }
 
 // API routes
@@ -48,14 +53,19 @@ if (config.envConfig.nodeEnv === 'production') {
   });
 }
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`
+// Start server if not running in serverless environment
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    logger.info(`
 =========================================
 🚀 Binance Trading Bot Server Running
 📊 Mode: ${config.envConfig.nodeEnv}
 🔌 Port: ${PORT}
 🔐 Testnet: ${config.envConfig.binanceTestnet ? 'Enabled' : 'Disabled'}
 =========================================
-  `);
-}); 
+    `);
+  });
+}
+
+// Export the Express app for serverless functions
+module.exports = app; 
